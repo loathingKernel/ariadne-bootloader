@@ -123,22 +123,24 @@ int main(void)
 
         if(timedOut()) {
 			if(eeprom_read_byte(EEPROM_IMG_STAT) == EEPROM_IMG_OK_VALUE) break;
-
-			//TODO: determine the conditions for reseting server OR reseting socket
-			if(tftpFlashing == TRUE) {
-				// Delete first page of flash memory
-				boot_page_erase(0);
-				// Reinitialize TFTP
-				tftpInit();
-				// Reset the timeout counter
-				resetTick();
-				// Unset tftp flag
-				tftpFlashing = FALSE;
-			}
 		}
-		wdt_reset();
-		/* Blink the notification led */
-		wdt_reset(); //Required so it doesn`t hang.
+
+		//TODO: determine the conditions for reseting server OR reseting socket
+		if(socketResetRequried()) {
+			// Delete first page of flash memory
+			boot_page_erase(0);
+			// Reinitialize TFTP
+			tftpInit();
+			// Reset the timeout counter
+			resetTick();
+			// Unset tftp flag
+			tftpFlashing = FALSE;
+		}
+		
+		//Required so it doesn`t hang.
+		wdt_reset(); 
+		
+		// Blink the notification led 
 		updateLed();
 	}
 

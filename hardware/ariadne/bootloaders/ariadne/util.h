@@ -41,6 +41,9 @@
 
 void updateLed(void);
 void resetTick(void);
+void resetSocket(void);
+
 uint8_t timedOut(void);
+uint8_t socketResetRequried(void);
 
 #endif
